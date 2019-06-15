@@ -80,6 +80,7 @@ func (c *control) usageRoot() {
 	fmt.Println("Usage: \t srcctl COMMAND")
 	fmt.Println("Commands:")
 	fmt.Println("\tstat\tDisplay statistic of cache usage")
+	fmt.Println("\tcache\tManage cache")
 	fmt.Println("\tsettings\tDisplay settings of a cache system")
 }
 

@@ -2,6 +2,7 @@ package service
 
 import (
 	"fmt"
+	"strings"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -43,13 +44,21 @@ func (s *Service) All() ([]Cache, error) {
 // Settings returns all cache settings
 func (s *Service) Settings() []string {
 	log.Info("Settings are requested")
+
+	// prepare a masked DSN
+	t1 := strings.Split(s.cfg.DSN, ":")
+	t2 := strings.Split(t1[1], "@")
+	t2[0] = "**********"
+	t1[1] = strings.Join(t2, "@")
+	maskDSN := strings.Join(t1, ":")
+
 	r := []string{}
 	r = append(r, fmt.Sprintf("%v<->%v", "APIAddr", s.cfg.APIAddr))
 	r = append(r, fmt.Sprintf("%v<->%v", "ExpiredPeriod", s.cfg.ExpiredPeriod))
 	r = append(r, fmt.Sprintf("%v<->%v", "SLA", s.cfg.SLA))
 	r = append(r, fmt.Sprintf("%v<->%v", "HTTPAddr", s.cfg.HTTPAddr))
 	r = append(r, fmt.Sprintf("%v<->%v", "CtlAddr", s.cfg.CtlAddr))
-	r = append(r, fmt.Sprintf("%v<->%v", "DSN", s.cfg.DSN))
+	r = append(r, fmt.Sprintf("%v<->%v", "DSN", maskDSN))
 	r = append(r, fmt.Sprintf("%v<->%v", "Debug", s.cfg.Debug))
 	return r
 }

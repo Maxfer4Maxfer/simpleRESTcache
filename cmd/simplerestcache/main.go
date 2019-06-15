@@ -39,7 +39,7 @@ func main() {
 
 	var g group.Group
 	{
-		// start HTTP Server
+		// start HTTP Server - presentation layer
 		g.Add(func() error {
 			return server.Run()
 		}, func(error) {
@@ -47,7 +47,7 @@ func main() {
 		})
 	}
 	{
-		// start gRPC Server
+		// start gRPC Server - control layer
 		g.Add(func() error {
 			return control.Run()
 		}, func(error) {
