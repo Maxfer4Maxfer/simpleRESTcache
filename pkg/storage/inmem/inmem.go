@@ -1,6 +1,7 @@
 package inmem
 
 import (
+	"sort"
 	"sync"
 	"time"
 
@@ -88,4 +89,88 @@ func (s *Storage) UpdateStat(req service.Request) {
 		"query": req.Q,
 		"count": ac,
 	}).Info("View count and request date fields has been increased ")
+}
+
+// TopN returns N most visited request from cache
+func (s *Storage) TopN(n int) ([]service.Cache, error) {
+	s.RLock()
+	defer s.RUnlock()
+
+	if n > len(s.cache) {
+		n = len(s.cache)
+	}
+
+	r := []service.Cache{}
+
+	type kv struct {
+		key   string
+		value int
+	}
+
+	var ss []kv
+	for k, v := range s.cache {
+		ss = append(ss, kv{k, v.AskCount})
+	}
+
+	sort.Slice(ss, func(i, j int) bool {
+		return ss[i].value > ss[j].value
+	})
+
+	for _, kv := range ss[:n] {
+		r = append(r, s.cache[kv.key])
+	}
+	return r, nil
+}
+
+// LastN returns N most unvisited request from cache
+func (s *Storage) LastN(n int) ([]service.Cache, error) {
+	s.RLock()
+	defer s.RUnlock()
+
+	if n > len(s.cache) {
+		n = len(s.cache)
+	}
+
+	r := []service.Cache{}
+
+	type kv struct {
+		key   string
+		value int
+	}
+
+	var ss []kv
+	for k, v := range s.cache {
+		ss = append(ss, kv{k, v.AskCount})
+	}
+
+	sort.Slice(ss, func(i, j int) bool {
+		return ss[i].value < ss[j].value
+	})
+
+	for _, kv := range ss[:n] {
+		r = append(r, s.cache[kv.key])
+	}
+	return r, nil
+}
+
+// All returns all cache records
+func (s *Storage) All() ([]service.Cache, error) {
+	s.RLock()
+	defer s.RUnlock()
+
+	r := []service.Cache{}
+
+	for _, c := range s.cache {
+		r = append(r, c)
+	}
+	return r, nil
+}
+
+// Clean deletes all cache records
+func (s *Storage) Clean() error {
+	s.Lock()
+	defer s.Unlock()
+
+	s.cache = make(map[string]service.Cache)
+	return nil
 }

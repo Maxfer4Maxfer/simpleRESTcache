@@ -152,6 +152,84 @@ func (s *Storage) UpdateStat(req service.Request) {
 			"id":    req.ID,
 			"query": req.Q,
 			"count": ac,
-		}).Info("View count and request date fields has been increased ")
+		}).Info("Statistics has been updated ")
 	}
+}
+
+// All returns all requests from cache
+func (s *Storage) All() ([]service.Cache, error) {
+	cache := []Cache{}
+	result := []service.Cache{}
+	if s.db != nil {
+		s.db.Find(&cache)
+		for _, c := range cache {
+			// convert datatypes from different packages
+			// gorm.Cache -> service.Cache
+			result = append(result, service.Cache{
+				Request:     c.Request,
+				Responce:    c.Responce,
+				ResStatus:   c.ResStatus,
+				RefreshDate: c.RefreshDate,
+				RequestDate: c.RequestDate,
+				AskCount:    c.AskCount,
+			})
+		}
+		return result, nil
+	}
+	return result, service.ErrStorageUnavailable
+}
+
+// Clean deletes all cache records
+func (s *Storage) Clean() error {
+	if s.db != nil {
+		s.db.Where("responce LIKE ?", "%").Delete(Cache{})
+		return nil
+	}
+	return service.ErrStorageUnavailable
+}
+
+// TopN returns N most visited requests from cache
+func (s *Storage) TopN(n int) ([]service.Cache, error) {
+	cache := []Cache{}
+	result := []service.Cache{}
+	if s.db != nil {
+		s.db.Order("ask_count desc, request_date desc").Limit(n).Find(&cache)
+		for _, c := range cache {
+			// convert datatypes from different packages
+			// gorm.Cache -> service.Cache
+			result = append(result, service.Cache{
+				Request:     c.Request,
+				Responce:    c.Responce,
+				ResStatus:   c.ResStatus,
+				RefreshDate: c.RefreshDate,
+				RequestDate: c.RequestDate,
+				AskCount:    c.AskCount,
+			})
+		}
+		return result, nil
+	}
+	return result, service.ErrStorageUnavailable
+}
+
+// LastN returns N most unvisited requests from cache
+func (s *Storage) LastN(n int) ([]service.Cache, error) {
+	cache := []Cache{}
+	result := []service.Cache{}
+	if s.db != nil {
+		s.db.Order("ask_count, request_date").Limit(n).Find(&cache)
+		for _, c := range cache {
+			// convert datatypes from different packages
+			// gorm.Cache -> service.Cache
+			result = append(result, service.Cache{
+				Request:     c.Request,
+				Responce:    c.Responce,
+				ResStatus:   c.ResStatus,
+				RefreshDate: c.RefreshDate,
+				RequestDate: c.RequestDate,
+				AskCount:    c.AskCount,
+			})
+		}
+		return result, nil
+	}
+	return result, service.ErrStorageUnavailable
 }

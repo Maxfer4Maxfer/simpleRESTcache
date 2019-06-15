@@ -1,6 +1,7 @@
 package server
 
 import (
+	"context"
 	"net/http"
 	"time"
 
@@ -27,13 +28,19 @@ func New(cfg *config.Config, service *service.Service) *Server {
 		ReadTimeout:  10 * time.Second,
 		WriteTimeout: 10 * time.Second,
 	}
-	log.Info("Presentation subsystem has been initialized")
+	log.Info("HTTP server has been initialized")
 
 	return s
 }
 
 // Run starts HTTP Server
-func (s *Server) Run() {
-	log.Info("HTTP server started ", s.server.Addr)
-	s.server.ListenAndServe()
+func (s *Server) Run() error {
+	log.Info("Starting HTTP server ", s.server.Addr)
+	return s.server.ListenAndServe()
+}
+
+// Close stops HTTP Server
+func (s *Server) Close() {
+	log.Info("Stopping HTTP server ", s.server.Addr)
+	s.server.Shutdown(context.Background())
 }

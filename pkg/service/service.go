@@ -7,6 +7,8 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/google/uuid"
+
 	log "github.com/sirupsen/logrus"
 
 	"simpleRestCache/pkg/config"
@@ -17,7 +19,11 @@ import (
 type Storage interface {
 	Cache(r string) Cache
 	SaveCache(c Cache)
+	Clean() error
 	UpdateStat(req Request)
+	TopN(n int) ([]Cache, error)
+	LastN(n int) ([]Cache, error)
+	All() ([]Cache, error)
 }
 
 // Request represents a request
@@ -242,4 +248,25 @@ func (s *Service) requestToAPI(req Request) APIResp {
 		Status: resp.StatusCode,
 		Err:    nil,
 	}
+}
+
+// Refresh renews all cache records
+func (s *Service) Refresh() error {
+	cache, err := s.All()
+	if err != nil {
+		log.Error("Error while requested all cache records")
+	}
+
+	for _, c := range cache {
+		r := s.requestToAPI(Request{
+			ID: uuid.New().String(),
+			Q:  c.Request,
+		})
+		s.storage.SaveCache(Cache{
+			Request:   c.Request,
+			Responce:  string(r.Resp),
+			ResStatus: r.Status,
+		})
+	}
+	return nil
 }

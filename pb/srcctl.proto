@@ -1,0 +1,47 @@
+syntax = "proto3";
+import "google/protobuf/timestamp.proto";
+package pb;
+
+// The Simple REST Cache Control service definition.
+service srcctl {
+  // Top N requests in cache
+  rpc All(AllRequest) returns (AllReply) {}
+  rpc TopN(TopNRequest) returns (TopNReply) {}
+  rpc LastN(LastNRequest) returns (LastNReply) {}
+  rpc Settings(SettingsRequest) returns (SettingsReply) {}
+  rpc Clean(CleanRequest) returns (CleanReply) {}
+  rpc Refresh(RefreshRequest) returns (RefreshReply) {}
+}
+
+message Cache {
+  string request = 1;
+  string responce = 2;
+  int32 resStatus = 3;
+  google.protobuf.Timestamp refreshDate = 4;
+  google.protobuf.Timestamp requestDate = 5;
+  int32 askCount = 6;
+}
+
+message AllRequest {}
+
+message AllReply { repeated Cache cache = 1; }
+
+message TopNRequest { int32 n = 1; }
+
+message TopNReply { repeated Cache cache = 1; }
+
+message LastNRequest { int32 n = 1; }
+
+message LastNReply { repeated Cache cache = 1; }
+
+message SettingsRequest {}
+
+message SettingsReply { repeated string settings = 1; }
+
+message CleanRequest {}
+
+message CleanReply {}
+
+message RefreshRequest {}
+
+message RefreshReply {}
