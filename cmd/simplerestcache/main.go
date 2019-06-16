@@ -15,7 +15,7 @@ import (
 	group "github.com/oklog/run"
 
 	service "simpleRestCache/pkg/service"
-	storage "simpleRestCache/pkg/storage/inmem"
+	storage "simpleRestCache/pkg/storage/gorm"
 )
 
 func main() {

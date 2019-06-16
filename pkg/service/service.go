@@ -98,7 +98,7 @@ func (s *Service) HandelRequest(req Request) ([]byte, int, error) {
 	// send a request to Endpoint
 	go func() {
 		select {
-		case <-time.After(s.cfg.SLA / 2):
+		case <-time.After(s.cfg.SLA / 10):
 			chRespAPI <- s.requestToAPI(req)
 		case <-ctxAPI.Done():
 		}
