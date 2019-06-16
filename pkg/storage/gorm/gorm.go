@@ -15,7 +15,7 @@ import (
 // Cache represents cache in a database
 type Cache struct {
 	Request     string `gorm:"primary_key"`
-	Responce    string
+	Responce    string `gorm:"type:text"`
 	ResStatus   int
 	RefreshDate time.Time
 	RequestDate time.Time
