@@ -21,14 +21,14 @@ type Config struct {
 
 // GetConfig returns a fulfilled Config
 func GetConfig() *Config {
-	fs := flag.NewFlagSet("simpleNews", flag.ExitOnError)
+	fs := flag.NewFlagSet("simpleRESTcache", flag.ExitOnError)
 	var (
 		apiAddr       = fs.String("api-URL", "https://places.aviasales.ru/v2/places.json", "URL of an endpoint API")
 		dsn           = fs.String("dsn", "root:root@tcp(mysql:3306)/tasks?charset=utf8&parseTime=True&loc=Local", "Database Source Name")
 		httpAddr      = fs.String("http-addr", ":8080", "HTTP listen address")
 		ctlAddr       = fs.String("control-addr", ":8081", "Control listen address")
-		expiredPeriod = fs.Duration("expiredPeriod", 1*time.Hour, "Expired cache duration. Valid time units are \"m\", \"h\"")
-		sla           = fs.Duration("sla", 3*time.Second, "SLA time is a period for which a responce to a client must be provided. Valid time units are \"ms\", \"s\", \"m\", \"h\"")
+		expiredPeriod = fs.Duration("expiredPeriod", 24*time.Hour, "Expired cache duration. Valid time units are \"m\", \"h\"")
+		sla           = fs.Duration("sla", 3*time.Second, "SLA time is a period for which a response to a client must be provided. Valid time units are \"ms\", \"s\", \"m\", \"h\"")
 		debug         = fs.Bool("debug", false, "Set debug mode")
 	)
 

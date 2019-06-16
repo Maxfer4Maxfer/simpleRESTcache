@@ -106,7 +106,7 @@ func (c *control) statPath(arr []string) {
 func (c *control) usageStat() {
 	fmt.Println("Usage: \t srcctl stat COMMAND")
 	fmt.Println("Commands:")
-	fmt.Println("\tall\t\tDisplay all from cache. <N> number")
+	fmt.Println("\tall\t\tDisplay all from cache")
 	fmt.Println("\ttop <N>\t\tDisplay top <N> popular requests to cache. <N> number")
 	fmt.Println("\tlast <N>\t\tDisplay last <N> unpopular requests to cache. <N> number")
 }
@@ -175,7 +175,7 @@ func (c *control) cachePath(arr []string) {
 func (c *control) usageCache() {
 	fmt.Println("Usage: \t srcctl cache COMMAND")
 	fmt.Println("Commands:")
-	fmt.Println("\tall\t\tDisplay all from cache. <N> number")
+	fmt.Println("\tall\t\tDisplay all from cache")
 	fmt.Println("\tclean\t\tDelete all cache records")
 	fmt.Println("\trefresh\t\tRefresh all cache records")
 }
