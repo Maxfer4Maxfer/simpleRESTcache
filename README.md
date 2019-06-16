@@ -9,7 +9,7 @@ It stands in front of you API Endpoint and act as a proxy/cache system.
 # Getting started
 
 ## Deploy
-* [Docker Compose deploy](https://github.com/Maxfer4Maxfer/simpleNews/blob/master/docs/docker-compose-deploy.md)
+* [Docker Compose deploy](./docs/docker-compose-deploy.md)
 
 ## CLI arguments
 ```bash
