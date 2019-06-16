@@ -97,8 +97,13 @@ func (s *Service) HandelRequest(req Request) ([]byte, int, error) {
 
 	// send a request to Endpoint
 	go func() {
+		// wait time
+		w := s.cfg.SLA / 10
+		if w > 10*time.Millisecond {
+			w = 10 * time.Millisecond
+		}
 		select {
-		case <-time.After(s.cfg.SLA / 10):
+		case <-time.After(w):
 			chRespAPI <- s.requestToAPI(req)
 		case <-ctxAPI.Done():
 		}
@@ -145,7 +150,7 @@ func (s *Service) HandelRequest(req Request) ([]byte, int, error) {
 
 					log.WithFields(log.Fields{
 						"id": req.ID,
-					}).Info("...returinint a cache record for a responce")
+					}).Info("...returning a cache record for a responce")
 					return []byte(respStorage.Responce), respStorage.ResStatus, nil
 				}
 			}
