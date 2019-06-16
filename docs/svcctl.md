@@ -17,16 +17,18 @@ go built ./srcctl/main.go
 ```
 
 ## Usage
-    srcctl -h <host> -p <port> COMMAND
-    |
-    |- stat 	        # Display statistic of cache usage
-    |   |- all		    # Display all from cache
-    |   |- top <N>	    # Display top <N> popular requests to cache. <N> number 
-    |   |- last <N>	    # Display last <N> unpopular requests to cache. <N> number
-    |
-    |- cache	Manage cache
-    |   |- all		    # Display all from cache
-    |   |- clean		Delete all cache records
-    |   |- refresh		Refresh all cache records
-    |
-    |- settings	Display settings of a cache system
+```bash
+srcctl -h <host> -p <port> COMMAND
+|
+|- stat			# Display statistic of cache usage
+|   |- all		# Display all from cache
+|   |- top <N>	    	# Display top <N> popular requests to cache. <N> number 
+|   |- last <N>	    	# Display last <N> unpopular requests to cache. <N> number
+|
+|- cache		# Manage cache
+|   |- all		# Display all from cache
+|   |- clean		# Delete all cache records
+|   |- refresh		# Refresh all cache records
+|
+|- settings		# Display settings of a cache system
+```

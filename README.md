@@ -34,6 +34,21 @@ Usage of simpleRESTcache:
 **svcclt** is a simpleRESTcache service management tool.
 **svcclt** is command line interface for control a simpleRESTcache instance.
 [Read more](./docs/svcctl.md) 
+```bash
+srcctl -h <host> -p <port> COMMAND
+|
+|- stat			# Display statistic of cache usage
+|   |- all		# Display all from cache
+|   |- top <N>	    	# Display top <N> popular requests to cache. <N> number 
+|   |- last <N>	    	# Display last <N> unpopular requests to cache. <N> number
+|
+|- cache		# Manage cache
+|   |- all		# Display all from cache
+|   |- clean		# Delete all cache records
+|   |- refresh		# Refresh all cache records
+|
+|- settings		# Display settings of a cache system
+```
 
 ## Change a storage subsystem
 There are two storage subsystem exists. One stores cache in memory. Other stores cache in MySQL. 
