@@ -1,4 +1,4 @@
-# Transaction App
+# simpleRESTcache
 **simpleRESTcache** is a simple API cache system written on Go.
 It stands in front of you API Endpoint and act as a proxy/cache system.
 **simpleRESTcache** also has the ability to change an original API Endpoint response and transform it format that you prefer. For example you have original JSON with dozen fields and need only three of them and one field is a concatenation two from original. In other words you can write your own parse logic and easily set **simpleRESTcache** for using it.
